@@ -1,0 +1,34 @@
+Package: GBIFsiteChecker
+Title: LocationChecker for GBIF - data
+Version: 1.0.0.0
+Authors@R: c(person("Lisa Maria", "Ganter", email = "lisa_maria.ganter@gmx.de", role = c("aut")), 
+  person("Kathrin", "Sackmann", email = "sackmann.kathrin@gmail.com", role = c("aut")), 
+  person("Marcel", "Gangwisch", email = "marcel.gangwisch@googlemail.com", role = c("aut", "cre")))
+Description: Downloads, checks, flags and corrects occurence data from the gbif
+    database
+Depends:
+    R (>= 3.2.3)
+License: GPL
+Imports:
+    sp (>= 1.2-3),
+    raster (>= 2.5-8),
+    XML (>= 3.98-1.5),
+    lattice (>= 0.20-34),
+    grid (>= 3.2.3),
+    foreign (>= 0.8-67),
+    maptools(>= 0.8-40),
+    dismo (>= 1.1-1),
+    curl (>= 2-3),
+    rgeos (>= 0.3-21),
+    rgbif (>= 0.9.6),
+    taxize (>= 0.7.9),
+    rgdal (>= 1.2-4),
+    utils (>= 3.3.1), 
+    devtools (>= 1.12.0),
+    foreach (>= 1.4.3),
+    doParallel (>= 1.0.10),
+    doSNOW (>= 1.0.14),
+    taxizesoap (>= 0.1.1.9830)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 5.0.1
