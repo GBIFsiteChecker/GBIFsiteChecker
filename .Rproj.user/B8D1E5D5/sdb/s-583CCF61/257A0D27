@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"GBIFsiteChecker\"\nauthor: \"Lisa Maria Ganter, Kathrin Sackmann, Marcel Gangwisch\"\ndate: \"14 12 2016\"\noutput: rmarkdown::html_vignette\nvignette: >\n %\\VignetteIndexEntry{GBIFsiteChecker}\n %\\VignetteEngine{knitr::rmarkdown}\n \\usepackage[utf8]{inputenc}\n---\n",
+    "created" : 1481729803744.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "260452529",
+    "id" : "257A0D27",
+    "lastKnownWriteTime" : 1481729944,
+    "last_content_update" : 1481729944237,
+    "path" : "~/GBIFsiteChecker/vignettes/index.Rmd",
+    "project_path" : "vignettes/index.Rmd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

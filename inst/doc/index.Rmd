@@ -1,0 +1,10 @@
+---
+title: "GBIFsiteChecker"
+author: "Lisa Maria Ganter, Kathrin Sackmann, Marcel Gangwisch"
+date: "14 12 2016"
+output: rmarkdown::html_vignette
+vignette: >
+ %\VignetteIndexEntry{GBIFsiteChecker}
+ %\VignetteEngine{knitr::rmarkdown}
+ \usepackage[utf8]{inputenc}
+---
