@@ -33,11 +33,11 @@ Imports:
     geoaxe (>= 0.1.0),
     ggplot2 (>= 2.2.0),
     oai (>= 0.2.2),
-    iterators (>= 1.0.8)
-    plyr (>= 1.8.4)
-    gtable (>= 0.2.0)
-    scales (>= 0.4.1)
-    xml2 (>= 1.0.0)
+    iterators (>= 1.0.8),
+    plyr (>= 1.8.4),
+    gtable (>= 0.2.0),
+    scales (>= 0.4.1),
+    xml2 (>= 1.0.0),
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1
