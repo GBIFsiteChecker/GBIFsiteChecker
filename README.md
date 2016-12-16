@@ -1,60 +1,54 @@
 # GBIFsiteChecker
 
-
+Checks and validates location data from the global biodiversity facility (GBIF)
 
 ## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+#Install "devtool package in R"
+install.package("devtools")
+#get GBIFsiteChecker from github
+devtools::install_github("GBIFsiteChecker/GBIFsiteChecker")
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+R Studio Version 1.0.44
 
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
+Packages required
+# install.packages("sp")
+# install.packages("raster")
+# install.packages("XML")
+# install.packages("lattice")
+# install.packages("grid")
+# install.packages("foreign")
+# install.packages("maptools")
+# install.packages("dismo")
+# install.packages("curl")
+# install.packages("httr")
+# install.packages("rgeos")
+# install.packages("rgbif")
+# install.packages("taxize")
+# install.packages("rgdal")
+# install.packages("devtools")
+# install.packages("doParallel")
+# install.packages("doSNOW")
+# # taxize soap extension for taxize utilizing soap to access the web service
+# # by World register of marine species (worms)
 
-Say what the step will be
 
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
+Decide on the correction level of the GBIFsiteChecker ("strict=1", "correction=2", "flagging=3"). Strict removes false data, "correction" shifts/corrects wrong data and flags them and "flagging" keeps the data as they are downloaded but flags that they are probably false. 
+Enter the startup function with the desired species name, the size definition of the chunks and how many occurences should be looked at. 
 
-Explain how to run the automated tests for this system
+# startup(species_name = "Balaenoptera musculus", records_per_chunk = 200, number_of_records = 4000,
+#        correction_level = 2)
 
-### Break down into end to end tests
 
-Explain what these tests test and why
+### Description of tests
+The tests validate the GBIF loaction data by comparing the data to external databases: 1) the world register of marine species (WORMS) and a  natural earth data shapefile. 
+If, the requested species is present in the WORMS list, and does not match any polygon from the shapefile, the occurrence is flagged as correct. If the species is not found in the WORMS list, it is assumed that the species is terrestrial and therefore is found within a polygon. Thus a point from latitude and longitude (EPSG:4326) from the GBIF data was created, which was tested to be located within a polygon of the Natural Earth shapefile. The data point was plotted in a polygon and returned the ISO2 code of the polygon which it was located in. Further, the returned ISO2 code was intersected with the ISO2 code provided by the GBIF data. In case of a matching code, the data was flagged as valid. If the data was invalid, the lat and or long or lat/long coordinates were swapped and the newly created point was rechecked. 
 
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 
