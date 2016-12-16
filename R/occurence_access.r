@@ -129,7 +129,7 @@ openShape <- function() {
 #'   natural earth.
 #' @return check_result: Boolean values indicating if the locations of the
 #'   occurences are in the given countries - true - correct, false - incorrect
-checkLocation <- function(current_occ_chunk, countries) {
+checkLocation <- function(current_occ_chunk, countries, species_opts) {
 
   # create empty result container
   # by default the points and the countries do not match
@@ -195,7 +195,7 @@ checkLocation <- function(current_occ_chunk, countries) {
 #'   natural earth.
 #' @return current_occ_chunk_corrected: Corrected or unchanged but flagged
 #'   occurences
-correctSign <- function(current_occ_chunk, countries) {
+correctSign <- function(current_occ_chunk, countries, species_opts) {
   # prepare temporal correction for each check
   corrected_current_occ_chunk_lat <- current_occ_chunk
   corrected_current_occ_chunk_long <- current_occ_chunk
@@ -216,12 +216,14 @@ correctSign <- function(current_occ_chunk, countries) {
 
   # recheck location for each modification
   isCorrectedLocationLatCorrect <- checkLocation(
-    current_occ_chunk = corrected_current_occ_chunk_lat, countries = countries)
+    current_occ_chunk = corrected_current_occ_chunk_lat, countries = countries,
+    species_opts = species_opts)
   isCorrectedLocationLongCorrect <- checkLocation(
-    current_occ_chunk = corrected_current_occ_chunk_long, countries = countries)
+    current_occ_chunk = corrected_current_occ_chunk_long, countries = countries,
+    species_opts = species_opts)
   isCorrectedLocationLatLongCorrect <- checkLocation(
     current_occ_chunk = corrected_current_occ_chunk_latlong,
-    countries = countries)
+    countries = countries, species_opts = species_opts)
   current_occ_chunk_corrected <- current_occ_chunk
 
   # indices of corrected occurences for each modification
@@ -258,7 +260,7 @@ correctSign <- function(current_occ_chunk, countries) {
 #'   natural earth.
 #' @return current_occ_chunk_corrected: Corrected or unchanged but flagged
 #'   occurences
-correctSwap <- function(current_occ_chunk, countries) {
+correctSwap <- function(current_occ_chunk, countries, species_opts) {
 
   corrected_current_occ_chunk_swapped <- current_occ_chunk
 
@@ -279,7 +281,7 @@ correctSwap <- function(current_occ_chunk, countries) {
   # recheck location
   isCorrectedLocationSwapCorrect <- checkLocation(
     current_occ_chunk = corrected_current_occ_chunk_swapped,
-    countries = countries)
+    countries = countries, species_opts = species_opts)
 
   current_occ_chunk_corrected <- current_occ_chunk
 
@@ -303,7 +305,7 @@ correctSwap <- function(current_occ_chunk, countries) {
 #'   natural earth.
 #' @return current_occ_chunk_corrected: Corrected or unchanged but flagged
 #'   occurences
-correctSignSwap <- function(current_occ_chunk, countries) {
+correctSignSwap <- function(current_occ_chunk, countries, species_opts) {
   corrected_current_occ_chunk_sign_swapped <- current_occ_chunk
 
   # access original location parameter from current occurence
@@ -327,7 +329,7 @@ correctSignSwap <- function(current_occ_chunk, countries) {
   # recheck location
   isCorrectedLocationSwapCorrect <- checkLocation(
     current_occ_chunk = corrected_current_occ_chunk_sign_swapped,
-    countries = countries)
+    countries = countries, species_opts = species_opts)
 
   current_occ_chunk_corrected <- current_occ_chunk
 
@@ -353,12 +355,14 @@ correctSignSwap <- function(current_occ_chunk, countries) {
 #'   flagging. Might be preprocessed data from a previous check.
 #' @return current_occ_chunk_corrected: Corrected or unchanged but flagged
 #'   occurences
-pipeline_generic_check <- function(fun, current_occ_chunk, countries) {
+pipeline_generic_check <- function(fun, current_occ_chunk, countries, 
+                                   species_opts) {
   current_occ_chunk_corrected <- current_occ_chunk
 
   # make an initial location check
   isLocationCorrect <- checkLocation(
-    current_occ_chunk = current_occ_chunk, countries = countries)
+    current_occ_chunk = current_occ_chunk, countries = countries,
+    species_opts = species_opts)
   # get the indices of the incorrect records which have to be corrected
   locationIncorrect_idx <- which(!isLocationCorrect)
   # apply different modification or correction modi
@@ -370,7 +374,8 @@ pipeline_generic_check <- function(fun, current_occ_chunk, countries) {
       # iso or country codes
       if (species_opts$isMarine == 0) {
         correctedLocations <- fun(
-          current_occ_chunk = current_occ_chunk, countries = countries)
+          current_occ_chunk = current_occ_chunk, countries = countries,
+          species_opts = species_opts)
         current_occ_chunk_corrected$data[locationIncorrect_idx,] <-
           correctedLocations$data[locationIncorrect_idx,]
       } else {
@@ -390,20 +395,23 @@ pipeline_generic_check <- function(fun, current_occ_chunk, countries) {
 #' @param current_occ_chunk
 #' @return current_occ_chunk_corrected: Corrected or unchanged but flagged
 #'   occurences
-pipeline <- function(current_occ_chunk, countries) {
+pipeline <- function(current_occ_chunk, countries, species_opts) {
   current_occ_chunk_corrected <- current_occ_chunk
   current_occ_chunk_corrected$data$correction_flag <- 1
 
   # apply the different kind of correction to the data passing the pipeline
   # sign correction
   current_occ_chunk_corrected <- pipeline_generic_check(
-    fun = correctSign, current_occ_chunk = current_occ_chunk_corrected, countries = countries)
+    fun = correctSign, current_occ_chunk = current_occ_chunk_corrected, 
+    countries = countries, species_opts = species_opts)
   # swap correction
   current_occ_chunk_corrected <- pipeline_generic_check(
-    fun = correctSwap, current_occ_chunk = current_occ_chunk_corrected, countries = countries)
+    fun = correctSwap, current_occ_chunk = current_occ_chunk_corrected, 
+    countries = countries, species_opts = species_opts)
   # sign + swap correction
   current_occ_chunk_corrected <- pipeline_generic_check(
-    fun = correctSignSwap, current_occ_chunk = current_occ_chunk_corrected, countries = countries)
+    fun = correctSignSwap, current_occ_chunk = current_occ_chunk_corrected, 
+    countries = countries, species_opts = species_opts)
 
   return (current_occ_chunk_corrected)
 }
@@ -516,7 +524,8 @@ mainLoop <- function(species_name, countries, correction_level,
          stop("No data found!")
        }
        # start the pipeline
-       corrected_data <- pipeline(current_occ_chunk = current_occ_chunk, countries = countries)
+       corrected_data <- pipeline(current_occ_chunk = current_occ_chunk, 
+                                  countries = countries, species_opts = species_opts)
     }
   # stop cluster, free memory form workers
   parallel::stopCluster(cl = cl)
@@ -561,8 +570,8 @@ startup <- function(species_name, number_of_records, records_per_chunk,
 # land species
 # startup(species_name = "Ciconia ciconia", records_per_chunk = 250, number_of_records = 2000,
 #        correction_level = 2)
-# startup(species_name = "Ursus americanus", records_per_chunk = 250, number_of_records = 1000,
-#        correction_level = 2)
+startup(species_name = "Ursus americanus", records_per_chunk = 250, number_of_records = 1000,
+        correction_level = 2)
 # startup(species_name = "Chamaerops humilis", records_per_chunk = 200, number_of_records = 100,
 #        correction_level = 2)
 # startup(species_name = "Scardinius erythrophthalmus", records_per_chunk = 200, number_of_records = 500,
