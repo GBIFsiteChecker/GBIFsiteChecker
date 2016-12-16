@@ -3,9 +3,9 @@
 Checks and validates location data from the global biodiversity facility (GBIF)
 
 ## Getting Started
-#Install "devtool package in R"
+Install "devtool package in R"
 install.package("devtools")
-#get GBIFsiteChecker from github
+get GBIFsiteChecker from github
 devtools::install_github("GBIFsiteChecker/GBIFsiteChecker")
 
 ## Prerequisites
