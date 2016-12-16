@@ -36,22 +36,24 @@ devtools::install_github("ropensci/taxizesoap")
 ##
 ## Load required Packages
 ##
-library(sp)
-library(raster)
-library(XML)
-library(lattice)
-library(grid)
-library(foreign)
-library(maptools)
-library(rgbif)    # doc: https://cran.r-project.org/web/packages/rgbif/rgbif.pdf
-library(dismo)
-library(rgdal)
-library(utils)
-library(foreach)
-library(doParallel)
-library(doSNOW)
-library(rgeos)
-library(taxizesoap)
+loadLibaries <- function() {
+  library(sp)
+  library(raster)
+  library(XML)
+  library(lattice)
+  library(grid)
+  library(foreign)
+  library(maptools)
+  library(rgbif)    # doc: https://cran.r-project.org/web/packages/rgbif/rgbif.pdf
+  library(dismo)
+  library(rgdal)
+  library(utils)
+  library(foreach)
+  library(doParallel)
+  library(doSNOW)
+  library(rgeos)
+  library(taxizesoap)
+}
 
 ##
 ## Initialize and setup environment
@@ -531,6 +533,7 @@ mainLoop <- function(species_name, countries, correction_level,
 #' @param limit
 startup <- function(species_name, number_of_records, records_per_chunk,
                     correction_level = 2) {
+  loadLibaries()
   correction_level <- correction_level
   # Load shape file
   initLocation()
