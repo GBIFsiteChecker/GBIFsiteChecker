@@ -324,7 +324,8 @@ correctSignSwap <- function(current_occ_chunk, countries, species_opts) {
 
   # apply swapped data to sign correction
   corrected_current_occ_chunk_sign_swapped <-
-    correctSign(corrected_current_occ_chunk_sign_swapped, countries)
+    correctSign(corrected_current_occ_chunk_sign_swapped, countries, 
+                species_opts)
 
   # recheck location
   isCorrectedLocationSwapCorrect <- checkLocation(
