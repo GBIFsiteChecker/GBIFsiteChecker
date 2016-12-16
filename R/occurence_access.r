@@ -388,6 +388,7 @@ pipeline_generic_check <- function(fun, current_occ_chunk, countries,
         correction_flag <- 4
     }
   }
+  current_occ_chunk_corrected <- na.omit(current_occ_chunk_corrected)
   return (current_occ_chunk_corrected)
 }
 
