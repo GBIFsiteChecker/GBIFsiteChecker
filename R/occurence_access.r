@@ -110,7 +110,7 @@ initLocation <- function() {
 #' Read the shape file utilizing the rgdal package
 openShape <- function() {
   # check for supported file formats
-  ogrDrivers()
+  # ogrDrivers()
   # open vector file (esri-shapeformat)
   countries <- try(readOGR(dsn="ne_50m_admin_0_countries.shp"))
   return (countries)
@@ -440,7 +440,7 @@ cropWorld <- function(occ, countries) {
   plot(out, col = "gainsboro", lwd = 0.2)
   par(xpd = TRUE)
   #add a legend - but make it appear outside of the plot
-  legend(x = "topright", legend = c("correct", "corrected", "invalid", "uncertain"),
+  legend(x = "bottom", legend = c("correct", "corrected", "invalid", "uncertain"),
          inset=c(-0.15,0), col=c("#0571b0","cyan", "#ca0020", "#f4a582"), 
          cex = 0.75, title = "GBIF-data", pch = c(15))
 }
@@ -560,8 +560,8 @@ startup <- function(species_name, number_of_records, records_per_chunk,
 #        correction_level = 2)
 # startup(species_name = "Ursus americanus", records_per_chunk = 250, number_of_records = 1000,
 #        correction_level = 2)
-# startup(species_name = "Chamaerops humilis", records_per_chunk = 200, number_of_records = 4000,
-#        correction_level = 2)
+startup(species_name = "Chamaerops humilis", records_per_chunk = 200, number_of_records = 100,
+        correction_level = 2)
 # startup(species_name = "Scardinius erythrophthalmus", records_per_chunk = 200, number_of_records = 500,
 #         correction_level = 2)
 # marine species
