@@ -1,5 +1,16 @@
 ---
 title: "GBIFsiteChecker"
+header-includes:
+  - \usepackage[ngerman]{babel}
 author: "Lisa Maria Ganter, Kathrin Sackmann, Marcel Gangwisch"
-date: "14 12 2016"
+date: 16\. December 2016
+output:
+  pdf_document:
+    fig_width: 6
+    fig_height: 4
+    toc: yes
+  html_document: default
 ---
+___
+
+##Einleitung
