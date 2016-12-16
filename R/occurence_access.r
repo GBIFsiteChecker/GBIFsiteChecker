@@ -28,10 +28,9 @@
 
 library(devtools)
 
-install.packages(
-  c("XMLSchema", "SSOAP"),
-  repos = c("http://packages.ropensci.org",
-            "http://cran.rstudio.com"))
+install.packages(c("XMLSchema", "SSOAP"), 
+                 repos = c("http://packages.ropensci.org", 
+                           "http://cran.rstudio.com"))
 devtools::install_github("ropensci/taxizesoap")
 
 ##
@@ -114,9 +113,6 @@ openShape <- function() {
   ogrDrivers()
   # open vector file (esri-shapeformat)
   countries <- try(readOGR(dsn="ne_50m_admin_0_countries.shp"))
-  # out <- crop(countries, extent(-20, 45, 30, 50))
-  out <- countries
-  plot(out, col = "gainsboro", lwd = 0.2)
   return (countries)
 }
 
@@ -355,7 +351,7 @@ correctSignSwap <- function(current_occ_chunk, countries) {
 #'   flagging. Might be preprocessed data from a previous check.
 #' @return current_occ_chunk_corrected: Corrected or unchanged but flagged
 #'   occurences
-pipeline_generic_check <- function(fun, current_occ_chunk) {
+pipeline_generic_check <- function(fun, current_occ_chunk, countries) {
   current_occ_chunk_corrected <- current_occ_chunk
 
   # make an initial location check
@@ -392,22 +388,61 @@ pipeline_generic_check <- function(fun, current_occ_chunk) {
 #' @param current_occ_chunk
 #' @return current_occ_chunk_corrected: Corrected or unchanged but flagged
 #'   occurences
-pipeline <- function(current_occ_chunk) {
+pipeline <- function(current_occ_chunk, countries) {
   current_occ_chunk_corrected <- current_occ_chunk
   current_occ_chunk_corrected$data$correction_flag <- 1
 
   # apply the different kind of correction to the data passing the pipeline
   # sign correction
   current_occ_chunk_corrected <- pipeline_generic_check(
-    fun = correctSign, current_occ_chunk = current_occ_chunk_corrected)
+    fun = correctSign, current_occ_chunk = current_occ_chunk_corrected, countries = countries)
   # swap correction
   current_occ_chunk_corrected <- pipeline_generic_check(
-    fun = correctSwap, current_occ_chunk = current_occ_chunk_corrected)
+    fun = correctSwap, current_occ_chunk = current_occ_chunk_corrected, countries = countries)
   # sign + swap correction
   current_occ_chunk_corrected <- pipeline_generic_check(
-    fun = correctSignSwap, current_occ_chunk = current_occ_chunk_corrected)
+    fun = correctSignSwap, current_occ_chunk = current_occ_chunk_corrected, countries = countries)
 
   return (current_occ_chunk_corrected)
+}
+
+cropWorld <- function(occ, countries) {
+  minLong <- 180
+  maxLong <- -180
+  minLat <- 90
+  maxLat <- -90
+  for (i in 1:NROW(occ)) {
+    validLong <- which(!is.na(occ[i,]$data$decimalLongitude))
+    validLat <- which(!is.na(occ[i,]$data$decimalLatitude))
+    iminLong <- min(occ[i,]$data$decimalLongitude[validLong])
+    imaxLong <- max(occ[i,]$data$decimalLongitude[validLong])
+    iminLat <- min(occ[i,]$data$decimalLatitude[validLat])
+    imaxLat <- max(occ[i,]$data$decimalLatitude[validLat])
+    if (iminLong < minLong) {
+      minLong <- iminLong
+    }
+    if (imaxLong > maxLong) {
+      maxLong <- imaxLong
+    }
+    if (iminLat < minLat) {
+      minLat <- iminLat
+    }
+    if (imaxLat > maxLat) {
+      maxLat <- imaxLat
+    }
+  }
+  print(paste("minLong: ", minLong, " maxLong: ", maxLong, " minLat: ", minLat, " maxLat: ", maxLat))
+  out <- crop(countries, extent(minLong - 10, maxLong + 10, minLat - 10,
+                                maxLat + 10))
+  # Expand right side of clipping rect to make room for the legend
+  par(xpd = FALSE,mar=c(5.1, 4.1, 4.1, 4.5))
+  #DEM with a custom legend
+  plot(out, col = "gainsboro", lwd = 0.2)
+  par(xpd = TRUE)
+  #add a legend - but make it appear outside of the plot
+  legend(x = "topright", legend = c("correct", "corrected", "invalid", "uncertain"),
+         inset=c(-0.15,0), col=c("#0571b0","cyan", "#ca0020", "#f4a582"), 
+         cex = 0.75, title = "GBIF-data", pch = c(15))
 }
 
 #' Plot one occurence based on the correction_flag
@@ -464,9 +499,8 @@ mainLoop <- function(species_name, countries, correction_level,
   correctedData <-
     foreach::foreach(i = 0:number_of_chunks, .combine = rbind,
      .options.snow = opts, .export =
-       c("initData", "pipeline", "checkLocation",
-         "countries", "correction_level", "correctSign",
-         "correctSwap", "correctSignSwap", "species_opts",
+       c("initData", "pipeline", "checkLocation", "correction_level",
+         "correctSign", "correctSwap", "correctSignSwap", "species_opts",
          "pipeline_generic_check"),
      .packages = c("rgbif", "rgeos", "sp")) %dopar% {
 
@@ -480,7 +514,7 @@ mainLoop <- function(species_name, countries, correction_level,
          stop("No data found!")
        }
        # start the pipeline
-       corrected_data <- pipeline(current_occ_chunk = current_occ_chunk)
+       corrected_data <- pipeline(current_occ_chunk = current_occ_chunk, countries = countries)
     }
   # stop cluster, free memory form workers
   parallel::stopCluster(cl = cl)
@@ -512,22 +546,26 @@ startup <- function(species_name, number_of_records, records_per_chunk,
                      records_per_chunk = records_per_chunk,
                      number_of_records = number_of_records,
                      species_opts = species_opts)
+
+  # plot the world depending on the extent of the result
+  cropWorld(occ = result, countries = countries)
   # plot the whole composed result
   plotPoint(occ = result, countries = countries)
-}
 
+  return (result)
+}
 # do some testing
+# land species
+# startup(species_name = "Ciconia ciconia", records_per_chunk = 250, number_of_records = 2000,
+#        correction_level = 2)
 # startup(species_name = "Ursus americanus", records_per_chunk = 250, number_of_records = 1000,
-#         correction_level = 2)
-# startup(species_name = "Chamaerops humilis", records_per_chunk = 200, number_of_records = 4000,
-#         correction_level = 2)
+#        correction_level = 2)
+startup(species_name = "Chamaerops humilis", records_per_chunk = 200, number_of_records = 4000,
+        correction_level = 2)
 # startup(species_name = "Scardinius erythrophthalmus", records_per_chunk = 200, number_of_records = 500,
 #         correction_level = 2)
-# startup(species_name = "Pygocentrus piraya", records_per_chunk = 1, number_of_records = 1,
-#         correction_level = 2)
+# marine species
 # startup(species_name = "Balaenoptera musculus", records_per_chunk = 200, number_of_records = 4000,
-#         correction_level = 2)
+#        correction_level = 2)
 # startup(species_name = "Delphinus delphis", records_per_chunk = 200, number_of_records = 4000,
-#         correction_level = 2)
-# startup(species_name = "Xenial xerus", records_per_chunk = 200, number_of_records = 4000,
 #         correction_level = 2)

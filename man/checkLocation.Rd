@@ -2,7 +2,7 @@
 % Please edit documentation in R/occurence_access.r
 \name{checkLocation}
 \alias{checkLocation}
-\title{Checks if lat, long locations concurs with country codes. Checks lat, long 
+\title{Checks if lat, long locations concurs with country codes. Checks lat, long
 if lat, long lies within country shape}
 \usage{
 checkLocation(current_occ_chunk, countries)
@@ -10,15 +10,15 @@ checkLocation(current_occ_chunk, countries)
 \arguments{
 \item{current_occ_chunk}{One data chunk from gbif containing occurences}
 
-\item{countries}{Dataset of all countries in the world provided by 
+\item{countries}{Dataset of all countries in the world provided by
 natural earth.}
 }
 \value{
-check_result: Boolean values indicating if the locations of the 
+check_result: Boolean values indicating if the locations of the
   occurences are in the given countries - true - correct, false - incorrect
 }
 \description{
-Checks if lat, long locations concurs with country codes. Checks lat, long 
+Checks if lat, long locations concurs with country codes. Checks lat, long
 if lat, long lies within country shape
 }
 

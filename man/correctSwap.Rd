@@ -3,7 +3,7 @@
 \name{correctSwap}
 \alias{correctSwap}
 \title{Checks if point with lat & long would concure in country shape with country
-code if lat and long are swapped; 
+code if lat and long are swapped;
 switched lat/long cannot exceed the dimension of valid lat/long numbers}
 \usage{
 correctSwap(current_occ_chunk, countries)
@@ -11,16 +11,16 @@ correctSwap(current_occ_chunk, countries)
 \arguments{
 \item{current_occ_chunk}{One data chunk from gbif containing occurences}
 
-\item{countries}{Dataset of all countries in the world provided by 
+\item{countries}{Dataset of all countries in the world provided by
 natural earth.}
 }
 \value{
-current_occ_chunk_corrected: Corrected or unchanged but flagged 
+current_occ_chunk_corrected: Corrected or unchanged but flagged
   occurences
 }
 \description{
 Checks if point with lat & long would concure in country shape with country
-code if lat and long are swapped; 
+code if lat and long are swapped;
 switched lat/long cannot exceed the dimension of valid lat/long numbers
 }
 

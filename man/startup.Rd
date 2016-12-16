@@ -9,8 +9,8 @@ startup(species_name, number_of_records, records_per_chunk,
 }
 \arguments{
 \item{correction_level}{A number defining the level of correction:
-1 - flag (flag and dont correct invalid data), 
-2 - correct (flag and correct invalid data), 
+1 - flag (flag and dont correct invalid data),
+2 - correct (flag and correct invalid data),
 3 - strict (remove invalid data)}
 }
 \description{

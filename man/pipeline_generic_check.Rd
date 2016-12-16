@@ -3,26 +3,26 @@
 \name{pipeline_generic_check}
 \alias{pipeline_generic_check}
 \title{Prepares pipline check and enables the three different output-modes:
-strict (delete errorneous data), 
+strict (delete errorneous data),
 correction (try to correct the data),
 uncertain (flag errorneous data but dont correct)}
 \usage{
-pipeline_generic_check(fun, current_occ_chunk)
+pipeline_generic_check(fun, current_occ_chunk, countries)
 }
 \arguments{
 \item{fun}{Function to apply to the pipeline and work according to correction
 level.}
 
-\item{current_occ_chunk}{Original chunk of occurences before correction and 
+\item{current_occ_chunk}{Original chunk of occurences before correction and
 flagging. Might be preprocessed data from a previous check.}
 }
 \value{
-current_occ_chunk_corrected: Corrected or unchanged but flagged 
+current_occ_chunk_corrected: Corrected or unchanged but flagged
   occurences
 }
 \description{
 Prepares pipline check and enables the three different output-modes:
-strict (delete errorneous data), 
+strict (delete errorneous data),
 correction (try to correct the data),
 uncertain (flag errorneous data but dont correct)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/occurence_access.r
 \name{mainLoop}
 \alias{mainLoop}
-\title{Main loop to iterate over all occurences with variables chunks 
+\title{Main loop to iterate over all occurences with variables chunks
 (variable in size an number)}
 \usage{
 mainLoop(species_name, countries, correction_level, records_per_chunk,
@@ -11,19 +11,19 @@ mainLoop(species_name, countries, correction_level, records_per_chunk,
 \arguments{
 \item{species_name}{Name of the species to download the occurences}
 
-\item{countries}{All countries of the world from shapefile to make 
+\item{countries}{All countries of the world from shapefile to make
 location checks.}
 
 \item{correction_level}{A number defining the level of correction:
-1 - flag (flag and dont correct invalid data), 
-2 - correct (flag and correct invalid data), 
+1 - flag (flag and dont correct invalid data),
+2 - correct (flag and correct invalid data),
 3 - strict (remove invalid data)}
 }
 \value{
 correctedData - Checked and corrected location gbif data
 }
 \description{
-Main loop to iterate over all occurences with variables chunks 
+Main loop to iterate over all occurences with variables chunks
 (variable in size an number)
 }
 

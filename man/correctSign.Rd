@@ -2,8 +2,8 @@
 % Please edit documentation in R/occurence_access.r
 \name{correctSign}
 \alias{correctSign}
-\title{Tries to correct the locations by swapping the sign of lat, long, latlong & 
-checks if the lat long of the point concurs the country shape with the 
+\title{Tries to correct the locations by swapping the sign of lat, long, latlong &
+checks if the lat long of the point concurs the country shape with the
 country code}
 \usage{
 correctSign(current_occ_chunk, countries)
@@ -11,16 +11,16 @@ correctSign(current_occ_chunk, countries)
 \arguments{
 \item{current_occ_chunk}{One chunk of several gbif occurence}
 
-\item{countries}{Dataset of all countries in the world provided by 
+\item{countries}{Dataset of all countries in the world provided by
 natural earth.}
 }
 \value{
-current_occ_chunk_corrected: Corrected or unchanged but flagged 
+current_occ_chunk_corrected: Corrected or unchanged but flagged
   occurences
 }
 \description{
-Tries to correct the locations by swapping the sign of lat, long, latlong & 
-checks if the lat long of the point concurs the country shape with the 
+Tries to correct the locations by swapping the sign of lat, long, latlong &
+checks if the lat long of the point concurs the country shape with the
 country code
 }
 

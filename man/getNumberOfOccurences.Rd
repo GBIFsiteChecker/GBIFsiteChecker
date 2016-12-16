@@ -10,7 +10,7 @@ getNumberOfOccurences(species_name)
 \item{species_name}{Name of the species to load}
 }
 \value{
-species$meta$count - The number of occurrences for the specified 
+species$meta$count - The number of occurrences for the specified
   species
 }
 \description{
