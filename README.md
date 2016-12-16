@@ -30,6 +30,6 @@ If, the requested species is present in the WORMS list, and does not match any p
 
 - Lacking ISO2 code in some presumably correct occurrences
 
-- Division of marine and terrestrial species neglects aerial species, such as doves that could be detected both on land and ocean.
+- Division of marine and terrestrial species neglects aerial species, such as doves that could be detected both on land and ocean
 
-- Other validation checks could be implemented to make the GBIFsiteChecker even more precise, such as a match of elevation of occurrences to the shapefiles, increasing the check precision from two to three dimensions.
+- Other validation checks could be implemented to make the GBIFsiteChecker even more precise, such as a match of elevation of occurrences to the shapefiles, increasing the check precision from two to three dimensions
