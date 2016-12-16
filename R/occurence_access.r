@@ -369,7 +369,7 @@ pipeline_generic_check <- function(fun, current_occ_chunk, countries,
   # apply different modification or correction modi
   if (length(locationIncorrect_idx) > 0) { # Location is incorrect
     if (correction_level == 3) { # strict mode
-      current_occ_chunk_corrected$data[locationIncorrect_idx,] <- NA
+      current_occ_chunk_corrected$data <- current_occ_chunk_corrected$data[-locationIncorrect_idx,]
     } else if (correction_level == 2) { # correction mode
       # correct only terrestial data, because it can be checked against
       # iso or country codes
@@ -388,7 +388,6 @@ pipeline_generic_check <- function(fun, current_occ_chunk, countries,
         correction_flag <- 4
     }
   }
-  current_occ_chunk_corrected <- na.omit(current_occ_chunk_corrected)
   return (current_occ_chunk_corrected)
 }
 
@@ -579,8 +578,8 @@ startup <- function(species_name, number_of_records, records_per_chunk,
 # land species
 # startup(species_name = "Ciconia ciconia", records_per_chunk = 250, number_of_records = 2000,
 #        correction_level = 2)
-# startup(species_name = "Ursus americanus", records_per_chunk = 250, number_of_records = 1000,
-#        correction_level = 2)
+startup(species_name = "Ursus americanus", records_per_chunk = 100, number_of_records = 100,
+        correction_level = 1)
 # startup(species_name = "Chamaerops humilis", records_per_chunk = 200, number_of_records = 100,
 #        correction_level = 2)
 # startup(species_name = "Scardinius erythrophthalmus", records_per_chunk = 200, number_of_records = 500,
