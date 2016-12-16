@@ -570,8 +570,8 @@ startup <- function(species_name, number_of_records, records_per_chunk,
 # land species
 # startup(species_name = "Ciconia ciconia", records_per_chunk = 250, number_of_records = 2000,
 #        correction_level = 2)
-startup(species_name = "Ursus americanus", records_per_chunk = 250, number_of_records = 1000,
-        correction_level = 2)
+# startup(species_name = "Ursus americanus", records_per_chunk = 250, number_of_records = 1000,
+#        correction_level = 2)
 # startup(species_name = "Chamaerops humilis", records_per_chunk = 200, number_of_records = 100,
 #        correction_level = 2)
 # startup(species_name = "Scardinius erythrophthalmus", records_per_chunk = 200, number_of_records = 500,
